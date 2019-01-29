@@ -107,20 +107,20 @@ TEST_F(TestActiveConsumer, simpleUseOfActveConsumer)
 class Stage
 {
 public:
-    Stage(std::function<void(std::string*)> f) :
+    Stage(std::function<void(std::string&)> f) :
         f_{f}
     {
     }
 
-    void process(std::string * buffer)
+    void process(std::string & buffer)
     {
-        a.send([=](){
+        a.send([&](){
             f_(buffer);
         });
     }
 
 private:
-    std::function<void(std::string*)> f_;
+    std::function<void(std::string&)> f_;
     Active a;
 };
 
@@ -129,26 +129,26 @@ TEST_F(TestActiveConsumer, pipelineOfConsumerActingOnBuffer)
     auto buffers = std::list<std::string>(1000, std::string{});
 
     {
-        Stage step4([](std::string * b){
-            *b +=" step4";
+        Stage step4([](std::string & b){
+            b +=" step4";
         });
-        Stage step3([&](std::string * b){
-            *b += " step3";
+        Stage step3([&](std::string & b){
+            b += " step3";
             step4.process(b);
         });
-        Stage step2([&](std::string * b){
-            *b += " step2";
+        Stage step2([&](std::string & b){
+            b += " step2";
             step3.process(b);
         });
-        Stage step1([&](std::string * b){
-            *b += "step1";
+        Stage step1([&](std::string & b){
+            b += "step1";
             step2.process(b);
         });
 
 
         for(auto & b : buffers)
         {
-            step1.process(&b);
+            step1.process(b);
         }
     }
 
