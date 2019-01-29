@@ -2,7 +2,9 @@ set (gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 add_subdirectory (googletest EXCLUDE_FROM_ALL)
 
 set(target_SRC
+    test_active_consumer.cpp
     test_desturction_order.cpp
+    test_lambda_capture.cpp
     test_mocking_example.cpp
 )
 
