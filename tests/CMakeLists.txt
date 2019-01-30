@@ -3,6 +3,7 @@ add_subdirectory (googletest EXCLUDE_FROM_ALL)
 
 set(target_SRC
     test_active_consumer.cpp
+    test_algorithm_transform.cpp
     test_desturction_order.cpp
     test_lambda_capture.cpp
     test_mocking_example.cpp
